@@ -12,12 +12,16 @@ function mkString(seq, separator = "") {
 	return r
 }
 
+// Namespace
+MAVLink <- {
+}
+
 enum MAVLinkMessageID {
 	INVALID,
     GPS_RAW_INT
 }
 
-class MAVLinkMessage {
+class MAVLink.Message {
 	constructor() {}
 
 	// Do not call directly, instead, call fromBlob
@@ -70,13 +74,13 @@ class MAVLinkMessage {
 		return format("%s: seq=%d, sysId=%d, compId=%d", classname, seq, sysId, componentId)
 	}
 
-	static classname = "MAVLinkMessage"
+	static classname = "Message"
 
 	// Construct a correct message object for the specified blob
 	static function fromBlob(b) {
 	    local msgId = b[5]
 		print("msgId " + msgId + "\n")
-		local r = MAVLinkMap[msgId]()
+		local r = MAVLink.Map[msgId]()
 		r.unpack(b)
 		return r
 	}
@@ -90,7 +94,7 @@ class MAVLinkMessage {
     }
 }
 
-class GPSPositionMessage extends MAVLinkMessage {
+class MAVLink.GPSPositionMessage extends MAVLink.Message {
 	constructor() {
 		base.constructor()
 	  	this.messageId = MAVLinkMessageID.GPS_RAW_INT
@@ -116,21 +120,21 @@ class GPSPositionMessage extends MAVLinkMessage {
 		return format("%s lat=%f, lon=%f", b, lat, lon)
 	}
 
-	static classname = "GPSPositionMessage"
+	static classname = "GPSPosition"
 }
 
-MAVLinkMap <- {}
-MAVLinkMap[MAVLinkMessageID.GPS_RAW_INT] <- GPSPositionMessage
+MAVLink.Map <- {}
+MAVLink.Map[MAVLinkMessageID.GPS_RAW_INT] <- MAVLink.GPSPositionMessage
 
 
 print("loaded\n")
-local testobj = GPSPositionMessage()
+local testobj = MAVLink.GPSPositionMessage()
 testobj.sysId = 5
 testobj.lat = 124.5
 print(testobj + "\n")
 local b = testobj.toBlob()
 print("packed: " + mkString(b, ",") + "\n")
 b.seek(0)
-local obj2 = MAVLinkMessage.fromBlob(b)
+local obj2 = MAVLink.Message.fromBlob(b)
 print("unpacked: " + obj2 + "\n")
 
