@@ -46,7 +46,11 @@ class MAVLinkMessage {
 	    return b
     }
 
-    function _tostring() {
+	function _tostring() {
+		return tostring()
+	}
+
+    function tostring() {
 		return format("%s: seq=%d, sysId=%d, compId=%d", classname, seq, sysId, componentId)
 	}
 
@@ -77,13 +81,11 @@ class GPSPositionMessage extends MAVLinkMessage {
       	b.writen(lon,'f')
     }
 
-/*
-    function _tostring() {
-	    local b = base._tostring()
+    function tostring() {
+	    local b = base.tostring()
 
 		return format("%s lat=%f, lon=%f", b, lat, lon)
 	}
-*/
 
 	static classname = "GPSPositionMessage"
 }
