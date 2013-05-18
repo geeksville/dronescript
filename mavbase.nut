@@ -13,10 +13,10 @@ function mkString(seq, separator = "") {
 }
 
 // Namespace
-MAVLink <- {
+MAV <- {
 }
 
-class MAVLink.Message {
+class MAV.Message {
 	constructor() {}
 
 	// Do not call directly, instead, call fromBlob
@@ -75,7 +75,7 @@ class MAVLink.Message {
 	static function fromBlob(b) {
 	    local msgId = b[5]
 		print("msgId " + msgId + "\n")
-		local r = MAVLink.Map[msgId]()
+		local r = MAV.Map[msgId]()
 		r.unpack(b)
 		return r
 	}

@@ -1,15 +1,15 @@
 
 
 
-enum MAVLinkMessageID {
+enum MAVMessageID {
 	INVALID,
     GPS_RAW_INT
 }
 
-class MAVLink.GPSPositionMessage extends MAVLink.Message {
+class MAV.GPSPositionMessage extends MAV.Message {
 	constructor() {
 		base.constructor()
-	  	this.messageId = MAVLinkMessageID.GPS_RAW_INT
+	  	this.messageId = MAVMessageID.GPS_RAW_INT
 	}
 
     function unpackPayload(b) {
@@ -35,6 +35,6 @@ class MAVLink.GPSPositionMessage extends MAVLink.Message {
 	static classname = "GPSPosition"
 }
 
-MAVLink.Map <- {}
-MAVLink.Map[MAVLinkMessageID.GPS_RAW_INT] <- MAVLink.GPSPositionMessage
+MAV.Map <- {}
+MAV.Map[MAVMessageID.GPS_RAW_INT] <- MAV.GPSPositionMessage
 
