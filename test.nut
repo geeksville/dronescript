@@ -1,19 +1,35 @@
 
-enum MAVType {
-    GPS_POSITION
+
+function mkString(seq, separator = "") {
+	local r = ""
+	foreach(idx, val in seq) {
+		if(idx != 0)
+			r += separator
+
+		r += val
+	}
+
+	return r
+}
+
+enum MAVLinkMessageID {
+	INVALID,
+    GPS_RAW_INT
 }
 
 class MAVLinkMessage {
+	constructor() {}
 
-    constructor(b = null) {
-		if(b != null) {
+	// Do not call directly, instead, call fromBlob
+    function unpack(b) {
 			local start = b.readn('b') 
       		local payloadLen = b.readn('b')
         	seq = b.readn('b')
         	sysId = b.readn('b')
         	componentId = b.readn('b')
         	messageId = b.readn('b')
-		}
+
+			unpackPayload(b)
     }
 
     seq = 0
@@ -21,7 +37,7 @@ class MAVLinkMessage {
     componentId = 0
     messageId = 0
 
-    function pack() {
+    function toBlob() {
       	local b = blob(64) // FIXME, prereserve correct size
 
 		b.writen(0xfe, 'b')
@@ -32,7 +48,7 @@ class MAVLinkMessage {
         b.writen(messageId, 'b')
 
         local pos = b.tell()
-        writePayload(b)
+        packPayload(b)
         local payloadLen = b.tell() - pos
         b[1] = payloadLen
 
@@ -56,27 +72,40 @@ class MAVLinkMessage {
 
 	static classname = "MAVLinkMessage"
 
+	// Construct a correct message object for the specified blob
+	static function fromBlob(b) {
+	    local msgId = b[5]
+		print("msgId " + msgId + "\n")
+		local r = MAVLinkMap[msgId]()
+		r.unpack(b)
+		return r
+	}
+
     // Do not call directly, subclasses to override
-	function writePayload(b) {
+	function packPayload(b) {
+    }
+
+    // Do not call directly, subclasses to override
+	function unpackPayload(b) {
     }
 }
 
 class GPSPositionMessage extends MAVLinkMessage {
+	constructor() {
+		base.constructor()
+	  	this.messageId = MAVLinkMessageID.GPS_RAW_INT
+	}
 
-    constructor(b = null) {
-        base.constructor(b)
-
-    	if(b != null) {
+    function unpackPayload(b) {
 			lat = b.readn('f')
       		lon = b.readn('f')
-		}
     }
 
     lat = 0
     lon = 0
 
     // Generates a blob containing the payload
-	function writePayload(b) {
+	function packPayload(b) {
      	b.writen(lat,'f')
       	b.writen(lon,'f')
     }
@@ -90,13 +119,18 @@ class GPSPositionMessage extends MAVLinkMessage {
 	static classname = "GPSPositionMessage"
 }
 
+MAVLinkMap <- {}
+MAVLinkMap[MAVLinkMessageID.GPS_RAW_INT] <- GPSPositionMessage
+
+
 print("loaded\n")
 local testobj = GPSPositionMessage()
 testobj.sysId = 5
 testobj.lat = 124.5
 print(testobj + "\n")
-local b = testobj.pack()
-print("packed: " + b.len() + "\n")
+local b = testobj.toBlob()
+print("packed: " + mkString(b, ",") + "\n")
 b.seek(0)
-local obj2 = GPSPositionMessage(b)
+local obj2 = MAVLinkMessage.fromBlob(b)
 print("unpacked: " + obj2 + "\n")
+
