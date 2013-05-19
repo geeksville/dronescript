@@ -35,6 +35,5 @@ class MAV.GPSPositionMessage extends MAV.Message {
 	static classname = "GPSPosition"
 }
 
-MAV.Map <- {}
 MAV.Map[MAVMessageID.GPS_RAW_INT] <- MAV.GPSPositionMessage
 
