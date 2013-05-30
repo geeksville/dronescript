@@ -170,7 +170,6 @@ int getargs(HSQUIRRELVM v,int argc, char* argv[],SQInteger *retval)
 			//sq_pushstring(v,_SC("ARGS"),-1);
 			//sq_newarray(v,0);
 			
-#ifdef HAS_FILE
 			//sq_createslot(v,-3);
 			//sq_pop(v,1);
 			if(compiles_only) {
@@ -225,7 +224,6 @@ int getargs(HSQUIRRELVM v,int argc, char* argv[],SQInteger *retval)
 					
 				}
 			}
-#endif
 
 			//if this point is reached an error occured
 			{
@@ -255,8 +253,6 @@ void Interactive(HSQUIRRELVM v)
 	SQInteger done=0;
 	PrintVersionInfos();
 	
-		scprintf(_SC("pushing\n"));
-
 	sq_pushroottable(v);
 	sq_pushstring(v,_SC("quit"),-1);
 	sq_pushuserpointer(v,&done);
@@ -265,20 +261,19 @@ void Interactive(HSQUIRRELVM v)
 	sq_newslot(v,-3,SQFalse);
 	sq_pop(v,1);
 
-	scprintf(_SC("pushed\n"));
-
     while (!done) 
 	{
 		SQInteger i = 0;
 		scprintf(_SC("\nsq>"));
 
-	scprintf(_SC("getc\n"));
-
 		for(;;) {
 			int c;
 			if(done)return;
 			c = getchar();
-			if (c == _SC('\n')) {
+
+			if (c == EOF) 
+			  done = SQTrue;
+			else if (c == _SC('\r')) {
 				if (i>0 && buffer[i-1] == _SC('\\'))
 				{
 					buffer[i-1] = _SC('\n');
@@ -310,6 +305,7 @@ void Interactive(HSQUIRRELVM v)
 			memcpy(buffer,sq_getscratchpad(v,-1),(scstrlen(sq_getscratchpad(v,-1))+1)*sizeof(SQChar));
 			retval=1;
 		}
+
 		i=scstrlen(buffer);
 		if(i>0){
 			SQInteger oldtop=sq_gettop(v);
@@ -327,7 +323,7 @@ void Interactive(HSQUIRRELVM v)
 					scprintf(_SC("\n"));
 				}
 			}
-			
+
 			sq_settop(v,oldtop);
 		}
 	}
@@ -347,15 +343,15 @@ int flysq_main(int argc, char *argv[])
 
 	sq_pushroottable(v);
 
-	//sqstd_register_bloblib(v);
-	//sqstd_register_iolib(v);
-	//sqstd_register_systemlib(v);
-	//sqstd_register_mathlib(v);
-	//sqstd_register_stringlib(v);
+	sqstd_register_bloblib(v);
+	sqstd_register_iolib(v);
+	sqstd_register_systemlib(v);
+	sqstd_register_mathlib(v);
+	sqstd_register_stringlib(v);
 
 	//aux library
 	//sets error handlers
-	//sqstd_seterrorhandlers(v);
+	sqstd_seterrorhandlers(v);
 
 	//gets arguments
 	switch(getargs(v,argc,argv,&retval))

@@ -50,5 +50,7 @@ INCLUDE_DIRS     += $(SQ_SRCDIR)/include
 INCLUDE_DIRS     += $(SQ_SRCDIR)/squirrel
 INCLUDE_DIRS     += $(SQ_SRCDIR)/sqstdlib
 
+MODULE_STACKSIZE = 8000
+
 
 
