@@ -106,9 +106,22 @@ struct SQInstance;
 struct SQDelegable;
 struct SQOuter;
 
+// The following macros are predefined in nuttx, we don't want them
+#ifdef sq_next
+#undef sq_next
+#endif
+
 #ifdef _UNICODE
 #define SQUNICODE
 #endif
+
+// Most platforms have this field in tm, but nuttx does not
+#define HAS_TIME_WDAY
+
+// Nuttx misses some other features
+#define HAS_SYSTEM
+#define HAS_REMOVE
+#define HAS_CLOCK
 
 #ifdef SQUNICODE
 #if (defined(_MSC_VER) && _MSC_VER >= 1400) // 1400 = VS8
@@ -167,7 +180,18 @@ typedef char SQChar;
 #define scisspace	isspace
 #define scisdigit	isdigit
 #define scisxdigit	isxdigit
-#define sciscntrl	iscntrl
+
+#ifdef CONFIG_HAL_BOARD
+#define RAND_MAX 0x7fffffff
+#undef HAS_TIME_WDAY
+#undef HAS_SYSTEM
+#undef HAS_REMOVE
+#undef HAS_CLOCK
+#define sciscntrl(c)	((c) < 32 || (c) > 127)
+#else
+#define sciscntrl       iscntrl
+#endif
+
 #define scisalpha	isalpha
 #define scisalnum	isalnum
 #define scprintf	printf
