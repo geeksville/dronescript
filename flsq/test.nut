@@ -5,6 +5,8 @@ dofile("mavbase.nut", true)
 // dofile("mavgened.nut", true)
 dofile("nout.nut", true)
 
+writeclosuretofile("asbytes",loadfile("nout.nut", true))
+
 print("loaded\n")
 local testobj = MAV.HWSTATUS()
 testobj.sysId = 5
