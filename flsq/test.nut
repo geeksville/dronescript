@@ -2,13 +2,13 @@
 
 
 dofile("mavbase.nut", true)
-dofile("mavgened.nut", true)
-dofile("../mavlink/nout.nut", true)
+// dofile("mavgened.nut", true)
+dofile("nout.nut", true)
 
 print("loaded\n")
-local testobj = MAV.GPSPositionMessage()
+local testobj = MAV.HWSTATUS()
 testobj.sysId = 5
-testobj.lat = 124.5
+testobj.Vcc = 124.5
 print(testobj + "\n")
 local b = testobj.toBlob()
 print("packed: " + mkString(b, ",") + "\n")
