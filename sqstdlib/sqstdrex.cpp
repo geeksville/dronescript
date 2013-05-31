@@ -347,8 +347,8 @@ static SQBool sqstd_rex_matchcclass(SQInteger cclass,SQChar c)
 	case 'D': return !isdigit(c)?SQTrue:SQFalse;
 	case 'x': return isxdigit(c)?SQTrue:SQFalse;
 	case 'X': return !isxdigit(c)?SQTrue:SQFalse;
-	case 'c': return iscntrl(c)?SQTrue:SQFalse;
-	case 'C': return !iscntrl(c)?SQTrue:SQFalse;
+	case 'c': return sciscntrl(c)?SQTrue:SQFalse;
+	case 'C': return !sciscntrl(c)?SQTrue:SQFalse;
 	case 'p': return ispunct(c)?SQTrue:SQFalse;
 	case 'P': return !ispunct(c)?SQTrue:SQFalse;
 	case 'l': return islower(c)?SQTrue:SQFalse;

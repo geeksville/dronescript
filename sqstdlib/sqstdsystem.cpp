@@ -31,6 +31,7 @@ static SQInteger _system_getenv(HSQUIRRELVM v)
 }
 
 
+#ifdef HAS_SYSTEM
 static SQInteger _system_system(HSQUIRRELVM v)
 {
 	const SQChar *s;
@@ -40,13 +41,15 @@ static SQInteger _system_system(HSQUIRRELVM v)
 	}
 	return sq_throwerror(v,_SC("wrong param"));
 }
+#endif
 
-
+#ifdef HAS_CLOCK
 static SQInteger _system_clock(HSQUIRRELVM v)
 {
 	sq_pushfloat(v,((SQFloat)clock())/(SQFloat)CLOCKS_PER_SEC);
 	return 1;
 }
+#endif
 
 static SQInteger _system_time(HSQUIRRELVM v)
 {
@@ -56,6 +59,7 @@ static SQInteger _system_time(HSQUIRRELVM v)
 	return 1;
 }
 
+#ifdef HAS_REMOVE
 static SQInteger _system_remove(HSQUIRRELVM v)
 {
 	const SQChar *s;
@@ -64,6 +68,7 @@ static SQInteger _system_remove(HSQUIRRELVM v)
 		return sq_throwerror(v,_SC("remove() failed"));
 	return 0;
 }
+#endif
 
 static SQInteger _system_rename(HSQUIRRELVM v)
 {
@@ -111,8 +116,10 @@ static SQInteger _system_date(HSQUIRRELVM v)
     _set_integer_slot(v, _SC("day"), date->tm_mday);
     _set_integer_slot(v, _SC("month"), date->tm_mon);
     _set_integer_slot(v, _SC("year"), date->tm_year+1900);
+#ifdef HAS_TIME_WDAY
     _set_integer_slot(v, _SC("wday"), date->tm_wday);
     _set_integer_slot(v, _SC("yday"), date->tm_yday);
+#endif
 	return 1;
 }
 
@@ -121,11 +128,17 @@ static SQInteger _system_date(HSQUIRRELVM v)
 #define _DECL_FUNC(name,nparams,pmask) {_SC(#name),_system_##name,nparams,pmask}
 static SQRegFunction systemlib_funcs[]={
 	_DECL_FUNC(getenv,2,_SC(".s")),
+#ifdef HAS_SYSTEM
 	_DECL_FUNC(system,2,_SC(".s")),
+#endif
+#ifdef HAS_CLOCK
 	_DECL_FUNC(clock,0,NULL),
+#endif
 	_DECL_FUNC(time,1,NULL),
 	_DECL_FUNC(date,-1,_SC(".nn")),
+#ifdef HAS_REMOVE
 	_DECL_FUNC(remove,2,_SC(".s")),
+#endif
 	_DECL_FUNC(rename,3,_SC(".ss")),
 	{0,0}
 };
