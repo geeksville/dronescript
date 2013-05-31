@@ -1,14 +1,12 @@
 
-
-
 dofile("mavbase.nut", true)
 // dofile("mavgened.nut", true)
-dofile("nout.nut", true)
+dofile("gen/generated.nut", true)
 
-writeclosuretofile("asbytes",loadfile("nout.nut", true))
+// writeclosuretofile("asbytes",loadfile("nout.nut", true))
 
 print("loaded\n")
-local testobj = MAV.HWSTATUS()
+local testobj = MAV.Message.create(MAV.MSG_HWSTATUS)
 testobj.sysId = 5
 testobj.Vcc = 124.5
 print(testobj + "\n")

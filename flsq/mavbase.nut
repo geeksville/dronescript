@@ -22,9 +22,6 @@ function map(seq, fn) {
 MAV <- {
 }
 
-// Populated later by the autogened code
-MAV.Map <- {}
-
 // some base types from mavlink_types.h
 const MAVLINK_TYPE_CHAR     = 0
 const MAVLINK_TYPE_UINT8_T  = 1
@@ -39,6 +36,19 @@ const MAVLINK_TYPE_FLOAT    = 9
 const MAVLINK_TYPE_DOUBLE   = 10
 
 class MAV.Message {
+    // Subclasses can override
+    static fieldNames = []
+    static classname = "Message"
+
+    // Private dynamically loaded class definitions
+    static dispatcher = {}
+
+    // Instance variables
+    seq = 0
+    sysId = 0
+    componentId = 0
+    messageId = 0
+
     constructor() {}
 
     // Do not call directly, instead, call fromBlob
@@ -52,11 +62,6 @@ class MAV.Message {
 
 	unpackPayload(b)
     }
-
-    seq = 0
-    sysId = 0
-    componentId = 0
-    messageId = 0
 
     function toBlob() {
       	local b = blob(64) // FIXME, prereserve correct size
@@ -93,15 +98,23 @@ class MAV.Message {
         return prefix + mkString(map(fieldNames, @(f) f + "=" + rawget(f)), ", ")
     }
 
-    // Subclasses can override
-    static fieldNames = []
-    static classname = "Message"
+    // Create an instance of the specified message type (dynamically loads
+    // code as needed)
+    static function create(msgId) {
+	if(!(msgId in dispatcher))
+	    dispatcher[msgId] <- dofile("gen/" + msgId + ".nut", true)
+
+	local inst = dispatcher[msgId].instance()
+	inst.constructor()
+	inst.messageId = msgId
+	return inst
+    }
 
     // Construct a correct message object for the specified blob
     static function fromBlob(b) {
 	local msgId = b[5]
 	print("msgId " + msgId + "\n")
-	local r = MAV.Map[msgId]()
+	local r = create(msgId)
 	r.unpack(b)
 	return r
     }
