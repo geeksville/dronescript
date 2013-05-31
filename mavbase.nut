@@ -16,6 +16,22 @@ function mkString(seq, separator = "") {
 MAV <- {
 }
 
+// Populated later by the autogened code
+MAV.Map <- {}
+
+// some base types from mavlink_types.h
+const MAVLINK_TYPE_CHAR     = 0
+const MAVLINK_TYPE_UINT8_T  = 1
+const MAVLINK_TYPE_INT8_T   = 2
+const MAVLINK_TYPE_UINT16_T = 3
+const MAVLINK_TYPE_INT16_T  = 4
+const MAVLINK_TYPE_UINT32_T = 5
+const MAVLINK_TYPE_INT32_T  = 6
+const MAVLINK_TYPE_UINT64_T = 7
+const MAVLINK_TYPE_INT64_T  = 8
+const MAVLINK_TYPE_FLOAT    = 9
+const MAVLINK_TYPE_DOUBLE   = 10
+
 class MAV.Message {
 	constructor() {}
 
@@ -87,6 +103,20 @@ class MAV.Message {
     // Do not call directly, subclasses to override
 	function unpackPayload(b) {
     }
+
+	function writea(b, val, fmt, len) {
+		if(len == 0)
+			b.writen(val, fmt)
+		else
+			for(local i=0; i < len; i++) {
+				b.writen((i < val.len()) ? val[i] : 0, fmt)
+			}
+	}
+
+	function reada(b, fmt, len) {
+		b.readn(fmt)
+		// FIXME - handle len != 0
+	}
 }
 
 

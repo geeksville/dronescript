@@ -1,8 +1,9 @@
 
 
 
-dofile("mavbase.nut")
-dofile("mavgened.nut")
+dofile("mavbase.nut", true)
+dofile("mavgened.nut", true)
+dofile("../mavlink/nout.nut", true)
 
 print("loaded\n")
 local testobj = MAV.GPSPositionMessage()
