@@ -1,4 +1,8 @@
 
+dofile("lib/log.nut", true)
+dofile("lib/collection.nut", true)
+dofile("lib/actor.nut", true)
+
 dofile("mavbase.nut", true)
 // dofile("mavgened.nut", true)
 dofile("gen/generated.nut", true)
