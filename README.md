@@ -49,7 +49,6 @@ a few mavlink packet types this seems a good solution.
   completely programmatically from arrays that are passed in?
 * make a loadbinary() that compiles to binary if necessary and writes the 
   compiled file to disk - to make for faster loading than compiling from src
-* Delete dead actors (rather than just leaving them suspended) - MEMORY LEAK
 
 # Personal notes
 https://pixhawk.ethz.ch/px4/dev/gdb_cheatsheet

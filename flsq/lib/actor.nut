@@ -20,15 +20,20 @@ class Actor {
     coro = null
     queue = null
 
-    function constructor() {
-	queue = MessageQueue()
+    constructor() {
+	queue = MessageQueue(8)
 
-	coro = newthread(receiveThread)
+	// Bundle up this for the thread method
+	local fn = receiveThread.bindenv(this)
+	coro = newthread(fn)
 	coro.call() // Start the coroutine
+
+	Scheduler.actors.push(this)
     }
 
     function sendTo(msg) {
 	queue.enqueue(msg)
+	debug("Sent " + msg + " to " + this)
     }
 
     // Subclasses should override
@@ -40,9 +45,12 @@ class Actor {
     // Package methods
     //
 
+    // Returns ACTOR_STAT_x
     function perhapsWork() {
-	if(coro.getstatus() != "suspended")
-	    coro.wakeup()
+	if(coro.getstatus() == "suspended")
+	    return coro.wakeup()
+	else
+	    return ACTOR_STAT_EXITED
     }
 
     //
@@ -57,7 +65,7 @@ class Actor {
 	
 		if(msg instanceof PoisonPill) {
 		    info("Exiting actor\n")
-		    return
+		    return ACTOR_STAT_EXITED
 		}
 		else {
 		    suspend(ACTOR_STAT_DID_WORK) 
@@ -77,7 +85,7 @@ class MessageQueue {
     start = 0
     end = 0
 
-    function constructor(maxLen) {
+    constructor(maxLen) {
 	arr = array(maxLen + 1)
     }
 
@@ -90,7 +98,7 @@ class MessageQueue {
     }
 
     function enqueue(msg) {
-	if(isFull)
+	if(isFull())
 	    throw QueueFullException()
 
 	arr[end] = msg
@@ -99,7 +107,7 @@ class MessageQueue {
     
     // Returns null if empty
     function dequeue() {
-	if(isEmpty)
+	if(isEmpty())
 	    throw QueueEmptyException()
 
 	local r = arr[start]
@@ -112,18 +120,47 @@ class MessageQueue {
     }
 }
 
-class Scheduler {
+Scheduler <- {
+    //
+    // Package private
+    //
+
     actors = []
 
-    //
-    // Private methods follow
-    //
+    // Run for as long as there was work able to be done
+    // return false if all actors have exited
+    runOnce = function() {
+	local allexited = true
+	local didwork = false
+	local todelete = []
 
-    function runNext() {
-	// Kind of inefficient, we wake up every actor - if it has something
-	// in its queue it will do some work
-	foreach(a in actors) {
-	    a.perhapsWork()
+	do {
+	    didwork = false
+
+	    // FIXME Kind of inefficient, we wake up every actor - if it has something
+	    // in its queue it will do some work
+	    foreach(i, a in actors) {
+		local status = a.perhapsWork()
+		debug("Actor " + a + " returned " + status)
+
+		if(status == ACTOR_STAT_DID_WORK)
+		    didwork = true
+
+		if(status != ACTOR_STAT_EXITED)
+		    allexited = false
+		else
+		    todelete.push(i)
+	    }
+
+	    // Delete any dead actors
+	    while(todelete.len() > 0) {
+		local i = todelete.pop()
+		debug("Removing dead actor " + i)
+		actors.remove(i)
+	    }
 	}
+	while(didwork)
+
+	return !allexited
     }
 }
