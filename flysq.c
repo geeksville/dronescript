@@ -1,7 +1,7 @@
 /****************************************************************************
  *
- *   Copyright (C) 2012 PX4 Development Team. All rights reserved.
- *   Author: @author Lorenz Meier <lm@inf.ethz.ch>
+ *   Copyright (C) 2013 PX4 Development Team. All rights reserved.
+ *   Author: @author Kevin Hester <kevinh@geeksville.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -55,6 +55,8 @@
 #define scfprintf fprintf
 #define scfopen	fopen
 #define scvprintf vfprintf
+
+extern void osRegister(HSQUIRRELVM v);
 
 void PrintVersionInfos();
 
@@ -352,6 +354,8 @@ int flysq_main(int argc, char *argv[])
 	//aux library
 	//sets error handlers
 	sqstd_seterrorhandlers(v);
+
+	osRegister(v);
 
 	//gets arguments
 	switch(getargs(v,argc,argv,&retval))

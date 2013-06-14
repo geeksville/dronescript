@@ -43,7 +43,7 @@ SQLIB_SRCS = sqstdblob.cpp sqstdio.cpp sqstdaux.cpp sqstdstream.cpp sqstdmath.cp
 
 MODULE_COMMAND	 = sq
 MODULE_ENTRYPOINT = flysq_main
-SRCS		 = flysq.c setjmp.S $(addprefix squirrel/, $(SQ_SRCS)) $(addprefix sqstdlib/, $(SQLIB_SRCS))
+SRCS		 = flysq.c apmos.c setjmp.S $(addprefix squirrel/, $(SQ_SRCS)) $(addprefix sqstdlib/, $(SQLIB_SRCS))
 
 SQ_SRCDIR	 = $(abspath $(PX4_BASE)/)/src/modules/flyingsquirrel
 INCLUDE_DIRS     += $(SQ_SRCDIR)/include

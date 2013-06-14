@@ -29,9 +29,7 @@ a few mavlink packet types this seems a good solution.
   * flying squirrel library - user level API for developing squirrel apps for vehicles(flsq)
   * flying squirrel adapter - the C/C++ stub which must be provided for any new autopilot library or GCS
 
-* Fix capitalization of packet names
-* Add mavlink library
-* Add logging library
+* make adapter layer for px4
 * Add debug library
 * Make vario proof-of-concept
 * Change vehicle init scripts to boot flsq if available
@@ -41,6 +39,10 @@ a few mavlink packet types this seems a good solution.
 * For SITL handler
   * implement
 * Add install instructions
+
+# TODO before beta release
+
+* Add mechanism so we only ask native code to send us the mavlink packets we are interested in (rather than all packets)
 
 # TODO eventually
 

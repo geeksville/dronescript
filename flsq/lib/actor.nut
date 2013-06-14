@@ -67,13 +67,11 @@ class Actor {
 		    info("Exiting actor\n")
 		    return ACTOR_STAT_EXITED
 		}
-		else {
+		else 
 		    suspend(ACTOR_STAT_DID_WORK) 
-		}
 	    }
-	    else {
+	    else 
 		suspend(ACTOR_STAT_NO_WORK) 
-	    }
 	}
     }
 }
@@ -113,10 +111,6 @@ class MessageQueue {
 	local r = arr[start]
 	start = (start + 1) % arr.len()
 	return r
-    }
-
-    function size() {
-	return arr.len() - 1
     }
 }
 
