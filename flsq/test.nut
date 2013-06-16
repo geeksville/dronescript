@@ -32,6 +32,7 @@ print("pretending to receive a message - FIXME add publishing foo\n")
 local testobj = MAV.Message.create(MAV.MSG_HWSTATUS)
 testobj.sysId = 5
 testobj.Vcc = 124.5
+OSAgent.sendMavlink(testobj.toBlob())
 mr.sendTo(testobj)
 // print(testobj + "\n")
 

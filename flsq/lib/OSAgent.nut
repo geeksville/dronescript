@@ -19,7 +19,7 @@ OSAgent <- {
     /// mavMsg must be a blob of bytes to send 
     sendMavlink = function(mavMsg) {
 	// PROVIDED BY NATIVE CODE
-	print("Calling send + " mavMsg + "\n")
+	print("Calling send " + mavMsg + "\n")
 	os_sendMavlink(mavMsg)
     }
 }

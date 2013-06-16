@@ -55,7 +55,7 @@
 
 
 void TestOS::sendMavlink(const uint8_t *payload, unsigned payloadLen) {
-	printf("Sending %d to OS\n", payloadLen);
+	printf("Sending %d mavlink bytes to OS\n", payloadLen);
 }
 
 

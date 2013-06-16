@@ -132,7 +132,6 @@ SQInteger SQOS::osWaitMessage(HSQUIRRELVM v) {
   if(gotMessage) {
 	  SQUserPointer blob = sqstd_createblob(v, bufLen);
 	  memcpy(blob, buf, bufLen);
-
 	  // blob is sitting on the result stack
   }
   else
@@ -145,17 +144,17 @@ SQInteger SQOS::osWaitMessage(HSQUIRRELVM v) {
 
 SQInteger SQOS::osSendMavlink(HSQUIRRELVM v) {
   SQInteger nargs = sq_gettop(v); //number of arguments
-  if(nargs != 1)
+  if(nargs != 2)
     return sq_throwerror(v, _SC("Wrong # of arguments to sendMavlink"));
 	
   SQUserPointer payload;
-  if(!SQ_SUCCEEDED(sqstd_getblob(v, 1, &payload)))
+  if(!SQ_SUCCEEDED(sqstd_getblob(v, 2, &payload)))
     return 0;
 
   SQInteger payloadLen;
-  payloadLen = sqstd_getblobsize(v, 1);
+  payloadLen = sqstd_getblobsize(v, 2);
 
-  printf("Sending mavlink %Ld bytes\n", payloadLen);
+  // printf("Sending mavlink %Ld bytes\n", payloadLen);
   instance->sendMavlink((const uint8_t *) payload, payloadLen);
 
   return 0; 
