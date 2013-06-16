@@ -124,7 +124,13 @@ Scheduler <- {
 	run = function() {
 		while(runOnce()) {
 			// FIXME - we should wait forever
-			local msg = OSAgent.waitMessage(5000)
+			local blob = OSAgent.waitMessage(5000)
+			
+			if(blob != null) {
+				debug("Got blob! " + blob + "\n")
+				local msg = MAV.Message.fromBlob(blob)
+				debug("Got msg! " + msg + "\n");
+			}
 		}
 	}
 

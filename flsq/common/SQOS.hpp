@@ -1,6 +1,8 @@
 #ifndef __SQOS_HPP
 #define __SQOS_HPP
 
+#define MAX_MAVLINK_LEN 256
+
 typedef unsigned char uint8_t;
 
 // Utility functions

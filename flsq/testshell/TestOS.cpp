@@ -59,11 +59,20 @@ void TestOS::sendMavlink(const uint8_t *payload, unsigned payloadLen) {
 }
 
 
+uint8_t simMsg[] = {254,3,0,5,0,165,124,0,0,0,0};
+
 bool TestOS::waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen) {
 	// FIXME
 	usleep(waitMsecs * 1000L);
 
-	return false;
+	bool receivedMsg = true;
+
+	if(receivedMsg) {
+		*destBufLen = sizeof(simMsg);
+		memcpy(destBuf, simMsg, sizeof(simMsg));
+	}
+
+	return receivedMsg;
 }
 
 

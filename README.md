@@ -35,7 +35,7 @@ a few mavlink packet types this seems a good solution.
 * Change vehicle init scripts to boot flsq if available
 * For Nuttx/P4 handler
   * lower priority
-  * use own heap
+  * use own heap (define sq_malloc)
 * For SITL handler
   * implement
 * Add install instructions

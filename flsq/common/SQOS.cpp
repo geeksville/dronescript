@@ -125,11 +125,18 @@ SQInteger SQOS::osWaitMessage(HSQUIRRELVM v) {
     return 0;
 
   // FIXME, return a blob with the mavlink bytes
-  uint8_t buf[32];
+  uint8_t buf[MAX_MAVLINK_LEN]; // FIXME - not sure if it is best to burn up stack for this?
   int bufLen = sizeof(buf);
-  instance->waitMessage(timeoutMsec, buf, &bufLen);
+  bool gotMessage = instance->waitMessage(timeoutMsec, buf, &bufLen);
 
-  sq_pushnull(v);
+  if(gotMessage) {
+	  SQUserPointer blob = sqstd_createblob(v, bufLen);
+	  memcpy(blob, buf, bufLen);
+
+	  // blob is sitting on the result stack
+  }
+  else
+	  sq_pushnull(v);
 
   // sq_pushinteger(v,nargs); //push the number of arguments as return value
   return 1; //1 because 1 value is returned
