@@ -1,6 +1,7 @@
 #ifndef __SQOS_HPP
 #define __SQOS_HPP
 
+typedef unsigned char uint8_t;
 
 // Utility functions
 SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname);
@@ -22,14 +23,14 @@ protected:
 	//
 
 	// Send a message
-    virtual void sendMavlink(const void *payload, unsigned payloadLen) = 0;
+    virtual void sendMavlink(const uint8_t *payload, unsigned payloadLen) = 0;
 
 	// Implementer should return any received messages by writing to
 	// destBuf.  On entry *destBufLen contains the max # of bytes which
 	// can be accepted.  On exit *destBufLen should contain the number of
 	// bytes which were written
 	// @return true if a message as received, or false for timeout
-	virtual bool waitMessage(int waitMsecs, unsigned char *destBuf, int *destBufLen) = 0;
+	virtual bool waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen) = 0;
 
 private:
 	// Glue

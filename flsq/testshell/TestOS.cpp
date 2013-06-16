@@ -54,12 +54,12 @@
 #include "TestOS.hpp"
 
 
-void TestOS::sendMavlink(const void *payload, unsigned payloadLen) {
+void TestOS::sendMavlink(const uint8_t *payload, unsigned payloadLen) {
 	// FIXME
 }
 
 
-bool TestOS::waitMessage(int waitMsecs, unsigned char *destBuf, int *destBufLen) {
+bool TestOS::waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen) {
 	// FIXME
 	usleep(waitMsecs * 1000L);
 

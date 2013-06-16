@@ -6,9 +6,9 @@
 class TestOS : public SQOS {
 protected:
 	// Send a message
-    virtual void sendMavlink(const void *payload, unsigned payloadLen);
+    virtual void sendMavlink(const uint8_t *payload, unsigned payloadLen);
 
-	virtual bool waitMessage(int waitMsecs, unsigned char *destBuf, int *destBufLen);
+	virtual bool waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen);
 
 };
 

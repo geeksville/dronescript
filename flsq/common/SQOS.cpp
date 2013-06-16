@@ -125,7 +125,7 @@ SQInteger SQOS::osWaitMessage(HSQUIRRELVM v) {
     return 0;
 
   // FIXME, return a blob with the mavlink bytes
-  unsigned char buf[32];
+  uint8_t buf[32];
   int bufLen = sizeof(buf);
   instance->waitMessage(timeoutMsec, buf, &bufLen);
 
@@ -149,7 +149,7 @@ SQInteger SQOS::osSendMavlink(HSQUIRRELVM v) {
   payloadLen = sqstd_getblobsize(v, 1);
 
   printf("Sending mavlink %Ld bytes\n", payloadLen);
-  instance->sendMavlink(payload, payloadLen);
+  instance->sendMavlink((const uint8_t *) payload, payloadLen);
 
   return 0; 
 }
