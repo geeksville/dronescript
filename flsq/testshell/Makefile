@@ -5,8 +5,8 @@ INCZ= -I$(SQUIRREL)/include -I. -I$(SQUIRREL)/sqlibs -I../apm
 LIBZ= -L$(SQUIRREL)/lib 
 LIB= -lsquirrel -lsqstdlib
 
-OBJS= sq.o ../apm/apmos.o
-SRCS= sq.cpp ../apm/apmos.cpp
+OBJS= sq.o testos.o
+SRCS= sq.cpp testos.cpp
 
 
 sq32:
