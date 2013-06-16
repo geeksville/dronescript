@@ -51,6 +51,7 @@
 #include <sqstdstring.h>
 #include <sqstdaux.h>
 
+#include "apmos.hpp"
 
 #define scfprintf fprintf
 #define scfopen	fopen
@@ -331,9 +332,8 @@ void Interactive(HSQUIRRELVM v)
 	}
 }
 
-__EXPORT int flysq_main(int argc, char *argv[]);
 
-int flysq_main(int argc, char *argv[])
+extern "C" int flysq_main(int argc, char *argv[])
 {
 	SQInteger retval = 0;
 
@@ -355,7 +355,8 @@ int flysq_main(int argc, char *argv[])
 	//sets error handlers
 	sqstd_seterrorhandlers(v);
 
-	osRegister(v);
+	APMOS os;
+	os.init(v);
 
 	//gets arguments
 	switch(getargs(v,argc,argv,&retval))

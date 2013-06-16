@@ -37,18 +37,23 @@
 
 SQ_COMP_SRCS = sqlexer.cpp sqcompiler.cpp 
 
+FLSQ_COMMONDIR = $(FLSQ_ROOT)/flsq/common
+FLSQ_APMDIR = $(FLSQ_ROOT)/flsq/apm
+
 SQ_SRCS = sqapi.cpp sqbaselib.cpp sqfuncstate.cpp sqdebug.cpp sqobject.cpp sqstate.cpp sqtable.cpp sqmem.cpp sqvm.cpp sqclass.cpp $(SQ_COMP_SRCS)
 
 SQLIB_SRCS = sqstdblob.cpp sqstdio.cpp sqstdaux.cpp sqstdstream.cpp sqstdmath.cpp sqstdsystem.cpp sqstdstring.cpp sqstdrex.cpp
 
-MODULE_COMMAND	 = sq
+MODULE_COMMAND	 = flsq
 MODULE_ENTRYPOINT = flysq_main
-SRCS		 = flysq.c apmos.c setjmp.S $(addprefix squirrel/, $(SQ_SRCS)) $(addprefix sqstdlib/, $(SQLIB_SRCS))
+SRCS		 = $(FLSQ_APMDIR)/flysq.cpp $(FLSQ_APMDIR)/apmos.cpp $(FLSQ_APMDIR)/setjmp.S $(FLSQ_COMMONDIR)/SQOS.cpp $(addprefix $(FLSQ_ROOT)/squirrel/, $(SQ_SRCS)) $(addprefix $(FLSQ_ROOT)/sqstdlib/, $(SQLIB_SRCS))
 
-SQ_SRCDIR	 = $(abspath $(PX4_BASE)/)/src/modules/flyingsquirrel
+SQ_SRCDIR	 = $(abspath $(FLSQ_ROOT))
 INCLUDE_DIRS     += $(SQ_SRCDIR)/include
 INCLUDE_DIRS     += $(SQ_SRCDIR)/squirrel
 INCLUDE_DIRS     += $(SQ_SRCDIR)/sqstdlib
+INCLUDE_DIRS     += $(FLSQ_COMMONDIR)
+INCLUDE_DIRS     += $(FLSQ_APMDIR)
 
 MODULE_STACKSIZE = 8000
 

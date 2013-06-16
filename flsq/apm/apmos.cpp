@@ -54,104 +54,12 @@
 #include "apmos.hpp"
 
 
-SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname) {
-  sq_pushroottable(v);
-  sq_pushstring(v,fname,-1);
-  sq_newclosure(v,f,0); //create a new function
-  sq_createslot(v,-3);
-  sq_pop(v,1); //pops the root table
-  return 0;
+void APMOS::sendMavlink(const uint8_t *payload, unsigned payloadLen) {
 }
 
 
-SQInteger osWaitMessage(HSQUIRRELVM v) {
-  printf("Waiting for message\n");
 
-  SQInteger nargs = sq_gettop(v); //number of arguments
-  if(nargs != 1)
-    return sq_throwerror(v, _SC("Wrong # of arguments to waitMessage"));
-	
-  SQInteger timeoutMsec;
-  if(!SQ_SUCCEEDED(sq_getinteger(v, 1, &timeoutMsec)))
-    return 0;
-
-  sleep(timeoutMsec);
-
-  // FIXME, return a blob with the mavlink bytes
-
-  sq_pushnull(v);
-
-#if 0
-  for(SQInteger n=1;n<=nargs;n++)
-    {
-      printf("arg %d is ",n);
-      switch(sq_gettype(v,n))
-	{
-	case OT_NULL:
-	  printf("null");
-	  break;
-	case OT_INTEGER:
-	  printf("integer");
-	  break;
-	case OT_FLOAT:
-	  printf("float");
-	  break;
-	case OT_STRING:
-	  printf("string");
-	  break;
-	case OT_TABLE:
-	  printf("table");
-	  break;
-	case OT_ARRAY:
-	  printf("array");
-	  break;
-	case OT_USERDATA:
-	  printf("userdata");
-	  break;
-	case OT_CLOSURE:
-	  printf("closure(function)");
-	  break;
-	case OT_NATIVECLOSURE:
-	  printf("native closure(C function)");
-	  break;
-	case OT_GENERATOR:
-	  printf("generator");
-	  break;
-	case OT_USERPOINTER:
-	  printf("userpointer");
-	  break;
-	default:
-	  return sq_throwerror(v,"invalid param"); //throws an exception
-	}
-      printf("\n");
-    }
-#endif
-
-  // sq_pushinteger(v,nargs); //push the number of arguments as return value
-  return 1; //1 because 1 value is returned
-}
-
-
-SQInteger osSendMavlink(HSQUIRRELVM v) {
-  SQInteger nargs = sq_gettop(v); //number of arguments
-  if(nargs != 1)
-    return sq_throwerror(v, _SC("Wrong # of arguments to sendMavlink"));
-	
-  SQUserPointer payload;
-  if(!SQ_SUCCEEDED(sqstd_getblob(v, 1, &payload)))
-    return 0;
-
-  SQInteger payloadLen;
-  payloadLen = sqstd_getblobsize(v, 1);
-
-  // FIXME
-  printf("Sending mavlink %d bytes\n", payloadLen);
-
-  return 0; 
-}
-
-
-void SQOS::init(HSQUIRRELVM v) {
-  register_global_func(v, osWaitMessage, "os_waitMessage");
-  register_global_func(v, osSendMavlink, "os_sendMavlink");
+bool APMOS::waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen) {
+	// FIXME
+	return false;
 }

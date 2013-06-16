@@ -3,4 +3,14 @@
 
 #include "SQOS.hpp"
 
+class APMOS : public SQOS {
+protected:
+	// Send a message
+    virtual void sendMavlink(const uint8_t *payload, unsigned payloadLen);
+
+	virtual bool waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen);
+
+};
+
+
 #endif
