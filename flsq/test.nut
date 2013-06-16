@@ -1,6 +1,7 @@
 
 dofile("lib/log.nut", true)
 dofile("lib/collection.nut", true)
+dofile("lib/osagent.nut", true)
 dofile("lib/actor.nut", true)
 
 dofile("mavbase.nut", true)
@@ -30,5 +31,5 @@ testobj.Vcc = 124.5
 mr.sendTo(testobj)
 // print(testobj + "\n")
 
-Scheduler.runOnce()
+Scheduler.run()
 

@@ -1,12 +1,12 @@
 SQUIRREL= ../..
 
 OUT= $(SQUIRREL)/bin/flsq
-INCZ= -I$(SQUIRREL)/include -I. -I$(SQUIRREL)/sqlibs -I../apm
+INCZ= -I$(SQUIRREL)/include -I. -I$(SQUIRREL)/sqlibs -I../common
 LIBZ= -L$(SQUIRREL)/lib 
 LIB= -lsquirrel -lsqstdlib
 
-OBJS= sq.o testos.o
-SRCS= sq.cpp testos.cpp
+OBJS= sq.o TestOS.o ../common/SQOS.o
+SRCS= sq.cpp TestOS.cpp ../common/SQOS.cpp
 
 test: flsq
 	cd ..; ../bin/flsq test.nut

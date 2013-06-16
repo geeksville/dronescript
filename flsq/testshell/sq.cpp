@@ -17,7 +17,7 @@
 #include <sqstdstring.h>
 #include <sqstdaux.h>
 
-#include "apmos.hpp"
+#include "TestOS.hpp"
 
 #ifdef SQUNICODE
 #define scfprintf fwprintf
@@ -331,7 +331,7 @@ int main(int argc, char* argv[])
 	//sets error handlers
 	sqstd_seterrorhandlers(v);
 
-	SQOS os;
+	TestOS os;
 	os.init(v);
 
 	//gets arguments

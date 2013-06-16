@@ -36,8 +36,6 @@
  * Launches a flying squirrel script session.
  */
 
-#include <unistd.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,7 +49,9 @@
 #include <sqstdstring.h>
 #include <sqstdaux.h>
 
-#include "apmos.hpp"
+#include "SQOS.hpp"
+
+SQOS *SQOS::instance;
 
 
 SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname) {
@@ -64,27 +64,12 @@ SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname) {
 }
 
 
-SQInteger osWaitMessage(HSQUIRRELVM v) {
-  printf("Waiting for message\n");
-
+void print_args(HSQUIRRELVM v) {
   SQInteger nargs = sq_gettop(v); //number of arguments
-  if(nargs != 1)
-    return sq_throwerror(v, _SC("Wrong # of arguments to waitMessage"));
-	
-  SQInteger timeoutMsec;
-  if(!SQ_SUCCEEDED(sq_getinteger(v, 1, &timeoutMsec)))
-    return 0;
 
-  // sleep(timeoutMsec);
-
-  // FIXME, return a blob with the mavlink bytes
-
-  sq_pushnull(v);
-
-#if 0
   for(SQInteger n=1;n<=nargs;n++)
     {
-      printf("arg %d is ",n);
+		printf("arg %d is ", (int) n);
       switch(sq_gettype(v,n))
 	{
 	case OT_NULL:
@@ -121,18 +106,37 @@ SQInteger osWaitMessage(HSQUIRRELVM v) {
 	  printf("userpointer");
 	  break;
 	default:
-	  return sq_throwerror(v,"invalid param"); //throws an exception
+	  sq_throwerror(v,"invalid param"); //throws an exception
 	}
       printf("\n");
     }
-#endif
+}
+
+
+SQInteger SQOS::osWaitMessage(HSQUIRRELVM v) {
+  printf("Waiting for message\n");
+
+  SQInteger nargs = sq_gettop(v); //number of arguments
+  if(nargs != 2)
+    return sq_throwerror(v, _SC("Wrong # of arguments to waitMessage"));
+	
+  SQInteger timeoutMsec;
+  if(!SQ_SUCCEEDED(sq_getinteger(v, 2, &timeoutMsec)))
+    return 0;
+
+  // FIXME, return a blob with the mavlink bytes
+  unsigned char buf[32];
+  int bufLen = sizeof(buf);
+  instance->waitMessage(timeoutMsec, buf, &bufLen);
+
+  sq_pushnull(v);
 
   // sq_pushinteger(v,nargs); //push the number of arguments as return value
   return 1; //1 because 1 value is returned
 }
 
 
-SQInteger osSendMavlink(HSQUIRRELVM v) {
+SQInteger SQOS::osSendMavlink(HSQUIRRELVM v) {
   SQInteger nargs = sq_gettop(v); //number of arguments
   if(nargs != 1)
     return sq_throwerror(v, _SC("Wrong # of arguments to sendMavlink"));
@@ -144,12 +148,17 @@ SQInteger osSendMavlink(HSQUIRRELVM v) {
   SQInteger payloadLen;
   payloadLen = sqstd_getblobsize(v, 1);
 
-  // FIXME
   printf("Sending mavlink %Ld bytes\n", payloadLen);
+  instance->sendMavlink(payload, payloadLen);
 
   return 0; 
 }
 
+
+
+SQOS::SQOS() {
+	instance = this;
+}
 
 void SQOS::init(HSQUIRRELVM v) {
   register_global_func(v, osWaitMessage, "os_waitMessage");

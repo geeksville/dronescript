@@ -121,6 +121,13 @@ Scheduler <- {
 
     actors = []
 
+	run = function() {
+		while(runOnce()) {
+			// FIXME - we should wait forever
+			local msg = OSAgent.waitMessage(5000)
+		}
+	}
+
     // Run for as long as there was work able to be done
     // return false if all actors have exited
     runOnce = function() {
