@@ -1,6 +1,6 @@
 SQUIRREL= ../..
 
-OUT= $(SQUIRREL)/bin/sq
+OUT= $(SQUIRREL)/bin/flsq
 INCZ= -I$(SQUIRREL)/include -I. -I$(SQUIRREL)/sqlibs -I../apm
 LIBZ= -L$(SQUIRREL)/lib 
 LIB= -lsquirrel -lsqstdlib
@@ -8,12 +8,12 @@ LIB= -lsquirrel -lsqstdlib
 OBJS= sq.o testos.o
 SRCS= sq.cpp testos.cpp
 
+test: flsq
+	cd ..; ../bin/flsq test.nut
 
-sq32:
+flsq:
 	g++ -O2 -s -fno-exceptions -fno-rtti -o $(OUT) $(SRCS) $(INCZ) $(LIBZ) $(LIB)
 
-sqprof:
+flsqprof:
 	g++ -O2 -pg -fno-exceptions -fno-rtti -pie -gstabs -g3 -o $(OUT) $(SRCS) $(INCZ) $(LIBZ) $(LIB)
 
-sq64:
-	g++ -O2 -s -m64 -fno-exceptions -fno-rtti -D_SQ64 -o $(OUT) $(SRCS) $(INCZ) $(LIBZ) $(LIB)
