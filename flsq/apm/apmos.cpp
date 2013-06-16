@@ -51,6 +51,7 @@
 #include <sqstdstring.h>
 #include <sqstdaux.h>
 
+#include "apmos.hpp"
 
 
 SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname) {
@@ -64,6 +65,8 @@ SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname) {
 
 
 SQInteger osWaitMessage(HSQUIRRELVM v) {
+  printf("Waiting for message\n");
+
   SQInteger nargs = sq_gettop(v); //number of arguments
   if(nargs != 1)
     return sq_throwerror(v, _SC("Wrong # of arguments to waitMessage"));
@@ -142,12 +145,13 @@ SQInteger osSendMavlink(HSQUIRRELVM v) {
   payloadLen = sqstd_getblobsize(v, 1);
 
   // FIXME
+  printf("Sending mavlink %d bytes\n", payloadLen);
 
   return 0; 
 }
 
 
-void osRegister(HSQUIRRELVM v) {
+void SQOS::init(HSQUIRRELVM v) {
   register_global_func(v, osWaitMessage, "os_waitMessage");
   register_global_func(v, osSendMavlink, "os_sendMavlink");
 }
