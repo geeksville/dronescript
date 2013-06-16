@@ -55,7 +55,7 @@
 
 
 void TestOS::sendMavlink(const uint8_t *payload, unsigned payloadLen) {
-	// FIXME
+	printf("Sending %d to OS\n", payloadLen);
 }
 
 

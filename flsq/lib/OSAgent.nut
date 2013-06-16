@@ -1,6 +1,8 @@
 
 
-// Template example for the code provided by the native environment
+// A _private_ gateway interface to the native code provided by the platform (FIXME, could be removed someday
+// and made entirely native.  
+// Used only by Scheduler and (FIXME)
 OSAgent <- {
 
     /// Wait for an event from the OS, possibly blocking our thread for

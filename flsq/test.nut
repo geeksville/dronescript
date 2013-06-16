@@ -1,8 +1,11 @@
 
 dofile("lib/log.nut", true)
 dofile("lib/collection.nut", true)
-dofile("lib/osagent.nut", true)
-dofile("lib/actor.nut", true)
+dofile("lib/OSAgent.nut", true)
+dofile("lib/Exception.nut", true)
+dofile("lib/MessageQueue.nut", true)
+dofile("lib/Actor.nut", true)
+dofile("lib/Scheduler.nut", true)
 
 dofile("mavbase.nut", true)
 // dofile("mavgened.nut", true)
@@ -10,6 +13,7 @@ dofile("gen/generated.nut", true)
 
 // writeclosuretofile("asbytes",loadfile("nout.nut", true))
 
+/// Actors who want to impelement message receivers can use this as an example
 class MavlinkReceiver extends Actor {
     function receive(msg) {
 	debug("RA received: " + msg)
