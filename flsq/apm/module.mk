@@ -44,8 +44,8 @@ SQ_SRCS = sqapi.cpp sqbaselib.cpp sqfuncstate.cpp sqdebug.cpp sqobject.cpp sqsta
 
 SQLIB_SRCS = sqstdblob.cpp sqstdio.cpp sqstdaux.cpp sqstdstream.cpp sqstdmath.cpp sqstdsystem.cpp sqstdstring.cpp sqstdrex.cpp
 
+MODULE_NAME = flsq
 MODULE_COMMAND	 = flsq
-MODULE_ENTRYPOINT = flysq_main
 SRCS		 = $(FLSQ_APMDIR)/flysq.cpp $(FLSQ_APMDIR)/apmos.cpp $(FLSQ_APMDIR)/setjmp.S $(FLSQ_COMMONDIR)/SQOS.cpp $(addprefix $(FLSQ_ROOT)/squirrel/, $(SQ_SRCS)) $(addprefix $(FLSQ_ROOT)/sqstdlib/, $(SQLIB_SRCS))
 
 SQ_SRCDIR	 = $(abspath $(FLSQ_ROOT))

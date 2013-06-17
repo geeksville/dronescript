@@ -333,7 +333,8 @@ void Interactive(HSQUIRRELVM v)
 }
 
 
-extern "C" int flysq_main(int argc, char *argv[])
+extern "C" int flsq_main(int argc, char *argv[]);
+__EXPORT int flsq_main(int argc, char *argv[])
 {
 	SQInteger retval = 0;
 
