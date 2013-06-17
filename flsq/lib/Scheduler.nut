@@ -8,18 +8,19 @@ Scheduler <- {
 
     actors = []
 
-	run = function() {
-		while(runOnce()) {
-			// FIXME - we should wait forever
-			local blob = OSAgent.waitMessage(5000)
-			
-			if(blob != null) {
-				debug("Got blob! " + blob + "\n")
-				local msg = MAV.Message.fromBlob(blob)
-				debug("Got msg! " + msg + "\n");
-			}
-		}
+    run = function() {
+	while(runOnce()) {
+	    // FIXME - we should wait forever
+	    local blob = OSAgent.waitMessage(5000)
+	    
+	    if(blob != null) {
+		trace("Got blob! " + blob)
+		local msg = MAV.Message.fromBlob(blob)
+		debug("Got msg! " + msg)
+		Mavlink.receiveFromOS(msg)
+	    }
 	}
+    }
 
     // Run for as long as there was work able to be done
     // return false if all actors have exited
