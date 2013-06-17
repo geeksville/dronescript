@@ -169,4 +169,6 @@ SQOS::SQOS() {
 void SQOS::init(HSQUIRRELVM v) {
   register_global_func(v, osWaitMessage, "os_waitMessage");
   register_global_func(v, osSendMavlink, "os_sendMavlink");
+
+  // Load our standard library
 }

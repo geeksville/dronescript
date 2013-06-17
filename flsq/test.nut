@@ -1,17 +1,18 @@
 
-dofile("lib/log.nut", true)
-dofile("lib/collection.nut", true)
-dofile("lib/OSAgent.nut", true)
-dofile("lib/Exception.nut", true)
-dofile("lib/MessageQueue.nut", true)
-dofile("lib/Actor.nut", true)
-dofile("lib/Publisher.nut", true)
-dofile("lib/Mavlink.nut", true)
-dofile("lib/Scheduler.nut", true)
-
-dofile("mavbase.nut", true)
-// dofile("mavgened.nut", true)
-dofile("gen/generated.nut", true)
+// FIXME - the following should be distributed as binaries, not text
+libs <- ["lib/log.nut",
+"lib/collection.nut", 
+"lib/OSAgent.nut",
+"lib/Exception.nut", 
+"lib/MessageQueue.nut", 
+"lib/Actor.nut",
+"lib/Publisher.nut", 
+"lib/Mavlink.nut", 
+"lib/Scheduler.nut", 
+"lib/mavbase.nut",
+"gen/generated.nut" ]
+foreach(f in libs)
+    dofile(f, true)
 
 // writeclosuretofile("asbytes",loadfile("nout.nut", true))
 
@@ -26,13 +27,13 @@ class MavlinkReceiver extends Actor {
     }
 
     function receive(msg) {
-	debug("RA received: " + msg)
+	debug("TestActor received: " + msg)
 
-	local b = msg.toBlob()
-	print("packed: " + mkString(b, ",") + "\n")
-	b.seek(0)
-	local obj2 = MAV.Message.fromBlob(b)
-	print("unpacked: " + obj2 + "\n")
+	//local b = msg.toBlob()
+	//print("packed: " + mkString(b, ",") + "\n")
+	//b.seek(0)
+	//local obj2 = MAV.Message.fromBlob(b)
+	//debug("unpacked: " + obj2 + "\n")
     }
 }
 
