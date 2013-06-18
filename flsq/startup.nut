@@ -1,6 +1,6 @@
 
 function startup() {
-    local dirprefix = (os_platform == "apm") ? "/flsq/" : ""
+    local dirprefix = (os_platform == "apm") ? "/fs/microsd/flsq/" : ""
 
     // FIXME - the following should be distributed as binaries, not text
     local libs = ["lib/log.nut",
