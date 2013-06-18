@@ -8,6 +8,7 @@
 class APMOS : public SQOS {
   mqd_t incoming;
 
+public:
   APMOS();
 
 protected:

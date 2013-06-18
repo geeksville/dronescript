@@ -248,7 +248,7 @@ int getargs(HSQUIRRELVM v,int argc, char* argv[],SQInteger *retval)
 void Interactive(HSQUIRRELVM v)
 {
 	
-#define MAXINPUT 1024
+#define MAXINPUT 256
 	SQChar buffer[MAXINPUT];
 	SQInteger blocks =0;
 	SQInteger string=0;
