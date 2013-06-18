@@ -16,7 +16,7 @@ class SQOS {
 public:
 	SQOS();
 
-	void init(HSQUIRRELVM v);
+        void init(HSQUIRRELVM v, const char *platformName);
 
 protected:
 

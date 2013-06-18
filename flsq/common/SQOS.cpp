@@ -63,6 +63,18 @@ SQInteger register_global_func(HSQUIRRELVM v,SQFUNCTION f,const char *fname) {
   return 0;
 }
 
+/**
+ * Assigns a string to a global squirrel string
+ */
+SQInteger register_global_string(HSQUIRRELVM v,const char *varname, const char *varval) {
+  sq_pushroottable(v);
+  sq_pushstring(v,varname,-1);
+  sq_pushstring(v,varval,-1);
+  sq_createslot(v,-3);
+  sq_pop(v,1); //pops the root table
+  return 0;
+}
+
 
 void print_args(HSQUIRRELVM v) {
   SQInteger nargs = sq_gettop(v); //number of arguments
@@ -163,10 +175,11 @@ SQInteger SQOS::osSendMavlink(HSQUIRRELVM v) {
 
 
 SQOS::SQOS() {
-	instance = this;
+  instance = this;
 }
 
-void SQOS::init(HSQUIRRELVM v) {
+void SQOS::init(HSQUIRRELVM v, const char *platformName) {
+  register_global_string(v, "os_platform", platformName);
   register_global_func(v, osWaitMessage, "os_waitMessage");
   register_global_func(v, osSendMavlink, "os_sendMavlink");
 

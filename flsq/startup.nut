@@ -1,18 +1,25 @@
 
-// FIXME - the following should be distributed as binaries, not text
-libs <- ["lib/log.nut",
-"lib/collection.nut", 
-"lib/OSAgent.nut",
-"lib/Exception.nut", 
-"lib/MessageQueue.nut", 
-"lib/Actor.nut",
-"lib/Publisher.nut", 
-"lib/Mavlink.nut", 
-"lib/Scheduler.nut", 
-"lib/mavbase.nut",
-"gen/generated.nut" ]
-foreach(f in libs)
-    dofile(f, true)
+function startup() {
+    local dirprefix = (os_platform == "apm") ? "/flsq/" : ""
+
+    // FIXME - the following should be distributed as binaries, not text
+    local libs = ["lib/log.nut",
+	"lib/collection.nut", 
+	"lib/OSAgent.nut",
+	"lib/Exception.nut", 
+	"lib/MessageQueue.nut", 
+	"lib/Actor.nut",
+	"lib/Publisher.nut", 
+	"lib/Mavlink.nut", 
+	"lib/Scheduler.nut", 
+	"lib/mavbase.nut",
+	"gen/generated.nut" ]
+
+    foreach(f in libs)
+	dofile(dirprefix + f, true)
+}
+
+startup()
 
 // writeclosuretofile("asbytes",loadfile("nout.nut", true))
 

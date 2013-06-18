@@ -9,7 +9,7 @@ OBJS= sq.o TestOS.o ../common/SQOS.o
 SRCS= sq.cpp TestOS.cpp ../common/SQOS.cpp
 
 test: flsq
-	cd ..; ../bin/flsq test.nut
+	cd ..; ../bin/flsq startup.nut
 
 flsq:
 	g++ -O2 -s -fno-exceptions -fno-rtti -o $(OUT) $(SRCS) $(INCZ) $(LIBZ) $(LIB)

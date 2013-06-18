@@ -273,6 +273,7 @@ void Interactive(HSQUIRRELVM v)
 			int c;
 			if(done)return;
 			c = getchar();
+			putchar(c); // we need to echo
 
 			if (c == EOF) 
 			  done = SQTrue;
@@ -357,7 +358,7 @@ __EXPORT int flsq_main(int argc, char *argv[])
 	sqstd_seterrorhandlers(v);
 
 	APMOS os;
-	os.init(v);
+	os.init(v, "apm");
 
 	//gets arguments
 	switch(getargs(v,argc,argv,&retval))

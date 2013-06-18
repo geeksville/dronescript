@@ -332,7 +332,7 @@ int main(int argc, char* argv[])
 	sqstd_seterrorhandlers(v);
 
 	TestOS os;
-	os.init(v);
+	os.init(v, "test");
 
 	//gets arguments
 	switch(getargs(v,argc,argv,&retval))
