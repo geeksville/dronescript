@@ -3,11 +3,13 @@
 class PoisonPill extends Message {
 }
 
-const ACTOR_STAT_NO_WORK = 0
-const ACTOR_STAT_DID_WORK = 1
-const ACTOR_STAT_EXITED = 2
-
 class Actor {
+    // We don't use 'const' because we want these symbols to live after the initial compile is
+	// complete.
+	static ACTOR_STAT_NO_WORK = 0
+	static ACTOR_STAT_DID_WORK = 1
+	static ACTOR_STAT_EXITED = 2
+
     coro = null
     queue = null
 

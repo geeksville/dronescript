@@ -1,0 +1,5 @@
+
+INFILE=$1
+OUTFILE=`dirname $INFILE`/`basename $INFILE .nut`.cnut
+
+../bin/flsq -c -o $OUTFILE $INFILE

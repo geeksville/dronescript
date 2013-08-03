@@ -13,6 +13,8 @@ SRCS= sq.cpp TestOS.cpp $(COMMON_SRCS)
 test: flsq
 	cd ..; ../bin/flsq startup.nut
 
+#	cd ..; ./compileall; ../bin/flsq startup.cnut
+
 flsq:
 	g++ -O2 -s -fno-exceptions -fno-rtti -o $(OUT) $(SRCS) $(INCZ) $(LIBZ) $(LIB)
 

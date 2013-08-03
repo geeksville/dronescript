@@ -3,24 +3,36 @@ function startup() {
     local dirprefix = (os_platform == "apm") ? "/fs/microsd/flsq/" : ""
 
     // FIXME - the following should be distributed as binaries, not text
-    local libs = ["lib/log.nut",
-		"lib/collection.nut", 
-		"lib/OSAgent.nut",
-		"lib/Exception.nut", 
-		"lib/MessageQueue.nut", 
-		"lib/Actor.nut",
-		"lib/Publisher.nut", 
-		"lib/Mavlink.nut", 
-		"lib/Scheduler.nut", 
-		"lib/mavbase.nut",
-		"gen/generated.nut" ]
+    local libs = ["lib/log",
+		"lib/collection", 
+		"lib/OSAgent",
+		"lib/Exception", 
+		"lib/MessageQueue", 
+		"lib/Actor",
+		"lib/Publisher", 
+		"lib/Mavlink", 
+		"lib/Scheduler", 
+		"lib/mavbase",
+		"gen/generated" ]
 
     foreach(f in libs) {
 		f = dirprefix + f
 		print("Loading " + f + "\r\n")
-		local code = loadfile(f, true)
-		print("Running...\r\n")
-		code()
+		local code = null // loadfile(f + ".cnut", true)
+		if(!code) {
+			print("No compiled code found, compiling from source...\r\n")
+			code = loadfile(f + ".nut", true)
+		}
+		if(code) {
+			print("Running...\r\n")
+			code()
+		}
+		else {
+			print("Error, unable to load critical library: " + f)
+			break
+		}
+		local numfree = collectgarbage()
+		print("GC freed " + numfree + "\r\n")
     }
 }
 

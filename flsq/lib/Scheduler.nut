@@ -38,10 +38,10 @@ Scheduler <- {
 		local status = a.perhapsWork()
 		debug("Actor " + a + " returned " + status)
 
-		if(status == ACTOR_STAT_DID_WORK)
+		if(status == Actor.ACTOR_STAT_DID_WORK)
 		    didwork = true
 
-		if(status != ACTOR_STAT_EXITED)
+		if(status != Actor.ACTOR_STAT_EXITED)
 		    allexited = false
 		else
 		    todelete.push(i)
