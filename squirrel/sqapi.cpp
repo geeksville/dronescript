@@ -253,7 +253,7 @@ void sq_pushuserpointer(HSQUIRRELVM v,SQUserPointer p)
 
 SQUserPointer sq_newuserdata(HSQUIRRELVM v,SQUnsignedInteger size)
 {
-	SQUserData *ud = SQUserData::Create(_ss(v), size);
+	SQUserData *ud = SQUserData::Create(_ss(v), size + SQ_ALIGNMENT);
 	v->Push(ud);
 	return (SQUserPointer)sq_aligning(ud + 1);
 }
