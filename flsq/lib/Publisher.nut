@@ -6,29 +6,29 @@ class Publisher {
     subscribers = null
 
     constructor() {
-	subscribers = []
+		subscribers = []
     }
 
     /// Register an actor as interested in subscribing to mavlink messages
     /// isInterested is a function that should return true if you want to see the specified message
     function subscribe(actor, isInterested = @(msg) true) {
-	local p = {
-	    a = actor
-	    fn = isInterested
-	}
+		local p = {
+			a = actor
+			fn = isInterested
+		}
 
-	subscribers.append(p)
+		subscribers.append(p)
     }
 
     function unsubscribe(actor) {
-	subscribers = subscribers.filter(@(i, v) v.a == actor)
+		subscribers = subscribers.filter(@(i, v) v.a == actor)
     }
 
     function publish(msg, from = null) {
-	foreach(val in subscribers)
-	    if(val.a != from && val.fn(msg)) { // Interested and not the sender?
+		foreach(val in subscribers)
+			if(val.a != from && val.fn(msg)) { // Interested and not the sender?
 	        debug("Sending msg to interested actor: " + msg)
-		val.a.sendTo(msg)
+			val.a.sendTo(msg)
 	    }
     }
 }
