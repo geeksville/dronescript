@@ -4,7 +4,7 @@ static int totalAlloc;
 
 void *sq_vm_malloc(SQUnsignedInteger size) {	
 	totalAlloc += size;  // Approximate
-	//printf("sqmalloc %d (total %d)\r\n", (int) size, totalAlloc);
+	printf("sqmalloc %d (total %d)\r\n", (int) size, totalAlloc);
 
 	void *r = malloc(size); 
 	if(!r) {
@@ -23,7 +23,7 @@ void *sq_vm_realloc(void *p, SQUnsignedInteger oldsize, SQUnsignedInteger size) 
 }
 
 void sq_vm_free(void *p, SQUnsignedInteger size) {
-	//printf("sqfree %d\r\n", size);
+	printf("sqfree %d\r\n", size);
 	totalAlloc -= size;
 
 	free(p); 
