@@ -21,6 +21,7 @@ a few mavlink packet types this seems a good solution.
 
 # TODO before first alpha release
 
+flsq /fs/microsd/flsq/startup.nut
 
 * Add license 
 * Explain arch

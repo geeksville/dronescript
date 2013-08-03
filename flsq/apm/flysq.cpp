@@ -359,6 +359,7 @@ __EXPORT int flsq_main(int argc, char *argv[])
 
 	APMOS os;
 	os.init(v, "apm");
+	printf("Done with APM gateway init\n");
 
 	//gets arguments
 	switch(getargs(v,argc,argv,&retval))

@@ -35,8 +35,15 @@ struct MsgInfo {
 
 mqd_t fromAPM = NULL;
 
-uint8_t outbuf[128], *writep = outbuf;
+#define MAX_MAVLINK_SIZE 128
+
+uint8_t outbuf[MAX_MAVLINK_SIZE], *writep = outbuf;
 int numWritten = 0;
+
+// from the scripting env to the APM
+uint8_t fromsq[MAX_MAVLINK_SIZE];
+uint16_t fromsq_remaining;
+uint8_t *fromsq_readptr;
 
 __EXPORT void flsq_send_start(void) {
   if(!fromAPM) {
@@ -87,7 +94,7 @@ __EXPORT void flsq_send_buffer(const uint8_t *buf, uint8_t len) {
 
 APMOS::APMOS() {
 
-  printf("receiver_thread: Starting\n");
+  printf("APM flsq starting\n");
 
   /* Fill in attributes for message queue */
 
@@ -110,7 +117,26 @@ APMOS::APMOS() {
   incoming = mq_open("FrAPM", O_RDONLY|O_CREAT, 0666, &attr);
 }
 
+__EXPORT uint8_t flsq_read(void) {
+	if(fromsq_remaining) {
+		fromsq_remaining--;
+		return *fromsq_readptr++;
+	}
+}
+
+__EXPORT uint16_t flsq_get_available(void) {
+	return fromsq_remaining;
+}
+
+
 void APMOS::sendMavlink(const uint8_t *payload, unsigned payloadLen) {
+	printf("sending a msg from flsq\n");
+
+	// FIXME, append to the previous bytes (ring buffer) rather than blowing away
+	// FIXME, validate payloadLen vs max size
+	memcpy(fromsq, payload, payloadLen);
+	fromsq_remaining = payloadLen;
+	fromsq_readptr = fromsq;
 }
 
 
@@ -121,6 +147,7 @@ bool APMOS::waitMessage(int waitMsecs, uint8_t *destBuf, int *destBufLen) {
   // FIXME - use the specified timeout wiht timedreceive
   int nbytes = mq_receive(incoming, &msg, sizeof(msg), 0);
   if(nbytes > 0) {
+	printf("delivering msg to flsq\n");
     memcpy(destBuf, msg.bytes, msg.numBytes); // FIXME validate max len
     *destBufLen = msg.numBytes;
     return true;

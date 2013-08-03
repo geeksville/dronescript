@@ -1,12 +1,14 @@
-SQUIRREL= ../..
+FLSQ_ROOT= ../..
 
-OUT= $(SQUIRREL)/bin/flsq
-INCZ= -I$(SQUIRREL)/include -I. -I$(SQUIRREL)/sqlibs -I../common
-LIBZ= -L$(SQUIRREL)/lib 
+FLSQ_COMMONDIR = $(FLSQ_ROOT)/flsq/common
+COMMON_SRCS  = $(addprefix $(FLSQ_COMMONDIR)/, SQOS.cpp flsqmem.cpp)
+
+OUT= $(FLSQ_ROOT)/bin/flsq
+INCZ= -I$(FLSQ_ROOT)/include -I. -I$(FLSQ_ROOT)/sqlibs -I../common -I$(FLSQ_ROOT)/squirrel
+LIBZ= -L$(FLSQ_ROOT)/lib 
 LIB= -lsquirrel -lsqstdlib
 
-OBJS= sq.o TestOS.o ../common/SQOS.o
-SRCS= sq.cpp TestOS.cpp ../common/SQOS.cpp
+SRCS= sq.cpp TestOS.cpp $(COMMON_SRCS)
 
 test: flsq
 	cd ..; ../bin/flsq startup.nut

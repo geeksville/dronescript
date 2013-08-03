@@ -1,12 +1,12 @@
 
 function info(msg) {
-    print(msg + "\n")
+    print(msg + "\r\n")
 }
 
 function debug(msg) {
-    print(msg + "\n")
+    print(msg + "\r\n")
 }
 
 function trace(msg) {
-    //print(msg + "\n")
+    print(msg + "\r\n")
 }

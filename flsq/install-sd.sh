@@ -1,5 +1,9 @@
 
-DEST=/media/kevinh/CC5F-F837
+DEST=/media/CC5F-F837
 
-mkdir $DEST/flsq
+echo "Writing to micro SD at $DEST"
+mkdir -p $DEST/flsq
 cp -a gen lib startup.nut $DEST/flsq
+umount $DEST
+echo "flsq files written SD card ejected"
+
