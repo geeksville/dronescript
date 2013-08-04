@@ -1,7 +1,7 @@
 
 DEST=/media/982B-A9B8
 
-./compileall
+#./compileall
 echo "Writing to micro SD at $DEST"
 mkdir -p $DEST/flsq
 cp -a gen/*.nut $DEST/flsq/gen
