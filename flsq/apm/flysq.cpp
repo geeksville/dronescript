@@ -342,15 +342,15 @@ __EXPORT int flsq_main(int argc, char *argv[])
 	HSQUIRRELVM v;
 	const SQChar *filename=NULL;
 	
-	v=sq_open(1024);
+	v=sq_open(256);
 	sq_setprintfunc(v,printfunc,errorfunc);
 
 	sq_pushroottable(v);
 
 	sqstd_register_bloblib(v);
 	sqstd_register_iolib(v);
-	sqstd_register_systemlib(v);
-	sqstd_register_mathlib(v);
+	//sqstd_register_systemlib(v);
+	//sqstd_register_mathlib(v);
 	sqstd_register_stringlib(v);
 
 	//aux library

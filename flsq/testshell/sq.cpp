@@ -316,16 +316,17 @@ int main(int argc, char* argv[])
 	_CrtSetAllocHook(MemAllocHook);
 #endif
 	
-	v=sq_open(1024);
+	v=sq_open(256);
 	sq_setprintfunc(v,printfunc,errorfunc);
 
 	sq_pushroottable(v);
 
 	sqstd_register_bloblib(v);
 	sqstd_register_iolib(v);
-	sqstd_register_systemlib(v);
-	sqstd_register_mathlib(v);
+	//sqstd_register_systemlib(v);
+	//sqstd_register_mathlib(v);
 	sqstd_register_stringlib(v);
+
 
 	//aux library
 	//sets error handlers

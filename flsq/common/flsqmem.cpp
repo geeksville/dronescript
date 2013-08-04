@@ -23,8 +23,8 @@ void *sq_vm_realloc(void *p, SQUnsignedInteger oldsize, SQUnsignedInteger size) 
 }
 
 void sq_vm_free(void *p, SQUnsignedInteger size) {
-	printf("sqfree %d\r\n", size);
 	totalAlloc -= size;
+	printf("sqfree %d (total %d)\r\n", (int) size, totalAlloc);
 
 	free(p); 
 }
