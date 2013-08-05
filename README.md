@@ -20,6 +20,10 @@ a few mavlink packet types this seems a good solution.
 
 ## Problems with squirrel
 The SQInstruction is _very_ large. (4 bytes of arg for every instruction + 4 bytes of misc stuff).  This is the predominant reason the following RAM footprint for squirrel is so high:
+* 27K of RAM in SQSharedState::Init
+* 4K in misc sq_open (SQVM init)
+* 7K in sq_base_register
+* 25K in std libs init (I later turned off some of this)
 
 # If you'd like to try running this
 
