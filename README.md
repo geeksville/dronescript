@@ -18,10 +18,31 @@ is that we generate one file for each interface, and lazy load the
 implementations as needed.  Considering that most applications only care about
 a few mavlink packet types this seems a good solution.
 
+## Problems with squirrel
+The SQInstruction is _very_ large. (4 bytes of arg for every instruction + 4 bytes of misc stuff).  This is the predominant reason the following RAM footprint for squirrel is so high:
+
+# If you'd like to try running this
+
+This is very early code and the installation is painful.  Probably not worth the bother unless you and I are collaborating
+on this.
+
+* Git clone this repo by cding into _workingdir_ then running "git clone git@github.com:geeksville/flsq.git"
+* Git pull the arduplane code (this code is currently up-to-date with TOT diydrones): git clone https://github.com/diydrones/ardupilot.git
+* cd ardupilot, "git checkout -b droneworks origin/droneworks
+* cd Arduplane, "make config"
+* cd .. and edit config.mk as follows:
+	# If you are interested in trying the Flying Squirrel (flsq) scripting environment, you should define the following
+	# variable.
+	export FLSQ_ROOT = _workingdir_/dronescript
+* cd .., git clone https://github.com/diydrones/PX4Firmware.git
+* cd ardupilot/Arduplane
+* make px4-upload
+* Copy needed files to the SD card:
+  * Remove SD card from PX4 and insert into your computer
+  * Run flsq/install-sd (you'll need to customize for your sdcard name - because this script is still crufty)
+* On the vehicle, type 3 returns to get an arduplane prompt, then type "test", then "shell" then "flsq /fs/microsd/flsq/startup.nut"
 
 # TODO before first alpha release
-
-flsq /fs/microsd/flsq/startup.nut
 
 * Add license 
 * Explain arch
@@ -30,9 +51,9 @@ flsq /fs/microsd/flsq/startup.nut
   * flying squirrel library - user level API for developing squirrel apps for vehicles(flsq)
   * flying squirrel adapter - the C/C++ stub which must be provided for any new autopilot library or GCS
 
-* make adapter layer for px4
-* Add debug library
-* Make vario proof-of-concept
+* make adapter layer for px4 (done)
+* Add debug library (done)
+* Make vario proof-of-concept (done)
 * Change vehicle init scripts to boot flsq if available
 * For Nuttx/P4 handler
   * lower priority
@@ -53,21 +74,5 @@ flsq /fs/microsd/flsq/startup.nut
 * make a loadbinary() that compiles to binary if necessary and writes the 
   compiled file to disk - to make for faster loading than compiling from src
 
-# Personal notes
-https://pixhawk.ethz.ch/px4/dev/gdb_cheatsheet
 
-cd
-./configure --enable-ft2232_libftdi
-make
-sudo make install
-sudo modprobe ftdi_sio
-
-# if you fix the ownership the ftdi serial port, you can do without sudo
-cd Firmware
-sudo openocd -f interface/olimex-arm-usb-ocd-h.cfg -f Debug/stm32f4x.cfg 
-
-arm-none-eabi-gdb /home/kevinh/development/drone/px4/Firmware/makefiles/build/firmware.elf
-tar ext :3333
-continue
-mon cortex_m3 maskisr on
 
