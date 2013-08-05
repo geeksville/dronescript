@@ -41,6 +41,7 @@ on this.
   * Remove SD card from PX4 and insert into your computer
   * Run flsq/install-sd (you'll need to customize for your sdcard name - because this script is still crufty)
 * On the vehicle, type 3 returns to get an arduplane prompt, then type "test", then "shell" then "flsq /fs/microsd/flsq/startup.nut"
+* If you'd like to regen the mavlink glue code, for the time being you'll need to pull from the "fordronescript" branch of https://github.com/geeksville/mavlink
 
 # TODO before first alpha release
 
